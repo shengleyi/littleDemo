@@ -54,7 +54,7 @@ public class Utility {
 
     public synchronized static boolean handleCountryRespond(CoolWeatherDB coolWeatherDB,String respond,int cityId){
         if(!TextUtils.isEmpty(respond)){
-            String[] allCountry = respond.split("'");
+            String[] allCountry = respond.split(",");
             if(allCountry!=null && allCountry.length>0){
                 for(String c:allCountry){
                     String[] array = c.split("\\|");

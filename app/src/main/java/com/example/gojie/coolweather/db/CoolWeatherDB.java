@@ -95,7 +95,7 @@ public class CoolWeatherDB {
 
     public List<CityModel> getCity(int provinceId){
         List<CityModel> list = new ArrayList<>();
-        Cursor cursor = db.query("City",null,"province_id",new String[]{String.valueOf(provinceId)},null,null,null);
+        Cursor cursor = db.query("City",null,"province_id = ?",new String[]{String.valueOf(provinceId)},null,null,null);
         if(cursor.moveToFirst()){
             do{
                 CityModel bean = new CityModel();
@@ -116,8 +116,8 @@ public class CoolWeatherDB {
     public void saveCountry(CountryModel countryData){
         if(countryData!=null){
             ContentValues values = new ContentValues();
-            values.put("city_name",countryData.getCountryName());
-            values.put("city_code",countryData.getCountryCode());
+            values.put("country_name",countryData.getCountryName());
+            values.put("country_code",countryData.getCountryCode());
             values.put("city_id",countryData.getCityId());
             db.insert("Country",null,values);
         }
@@ -130,7 +130,7 @@ public class CoolWeatherDB {
 
     public List<CountryModel> getCountry(int cityId){
         List<CountryModel> list = new ArrayList<>();
-        Cursor cursor = db.query("COuntry",null,"city_id",new String[]{String.valueOf(cityId)},null,null,null);
+        Cursor cursor = db.query("Country",null,"city_id = ?",new String[]{String.valueOf(cityId)},null,null,null);
         if(cursor.moveToFirst()){
             do {
                 CountryModel bean = new CountryModel();

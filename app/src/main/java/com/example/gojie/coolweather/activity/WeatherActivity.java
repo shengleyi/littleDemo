@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.gojie.coolweather.R;
+import com.example.gojie.coolweather.service.AutoUpdateService;
 import com.example.gojie.coolweather.utils.HttpUtils;
 import com.example.gojie.coolweather.utils.Utility;
 
@@ -30,6 +31,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
     private TextView temp1;
     private TextView temp2;
 
+    private TextView btn_change;
+    private TextView btn_refresh;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
         temp1 = (TextView)findViewById(R.id.temp1);
         temp2 = (TextView)findViewById(R.id.temp2);
 
+        btn_change = (TextView)findViewById(R.id.change_city);
+        btn_refresh = (TextView)findViewById(R.id.refresh_weather);
+
         String countyCode = getIntent().getStringExtra("countyCode");
 
         if(!TextUtils.isEmpty(countyCode)){
@@ -55,17 +62,28 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
         }else{
             showWeather();
         }
-        tv_cityname.setOnClickListener(this);
+        btn_change.setOnClickListener(this);
+        btn_refresh.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.city_name:
+            case R.id.change_city:
                 Intent i = new Intent(this,ChooseAreaActivity.class);
+                i.putExtra("from_weather_activity",true);
                 startActivity(i);
                 finish();
+                break;
+            case R.id.refresh_weather:
+                tv_ptime.setText("同步中...");
+                SharedPreferences pres = PreferenceManager.getDefaultSharedPreferences(this);
+
+                String weatherCode = pres.getString("weather_code","");
+                if(!TextUtils.isEmpty(weatherCode)){
+                    queryWeatherInfo(weatherCode);
+                }
                 break;
             default:
                 break;
@@ -113,7 +131,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
             }
 
             @Override
-            public void OnError() {
+            public void OnError(Exception e) {
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -139,5 +157,8 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
         tv_current_date.setText(pres.getString("current_date",""));
         tv_cityname.setVisibility(View.VISIBLE);
         ll_weather_info.setVisibility(View.VISIBLE);
+
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }

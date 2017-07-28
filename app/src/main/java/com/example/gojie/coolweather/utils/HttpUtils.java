@@ -14,7 +14,7 @@ public class HttpUtils {
 
     public interface HttpCallBackListener{
         void onFinish(String responds);
-        void OnError();
+        void OnError(Exception e);
     }
 
     public static void sendHttpRequest(final String addressUrl, final HttpCallBackListener listener){
@@ -41,7 +41,7 @@ public class HttpUtils {
                     }
                 }catch (Exception e){
                     if(listener!=null){
-                        listener.OnError();
+                        listener.OnError(e);
                     }
                 }finally {
                     if(connection!=null){

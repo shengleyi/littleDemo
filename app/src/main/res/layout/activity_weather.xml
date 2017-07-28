@@ -10,6 +10,17 @@
         android:background="#484e61">
 
         <TextView
+            android:id="@+id/change_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="切换"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10sp"
+            />
+
+        <TextView
             android:id="@+id/city_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,6 +28,18 @@
             android:textColor="#fff"
             android:textSize="24sp"
             android:text="标题"/>
+
+        <TextView
+            android:id="@+id/refresh_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="更新"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10sp"
+            />
 
     </RelativeLayout>
 

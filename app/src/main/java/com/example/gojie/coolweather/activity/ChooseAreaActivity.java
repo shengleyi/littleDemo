@@ -2,7 +2,10 @@ package com.example.gojie.coolweather.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -62,6 +65,13 @@ public class ChooseAreaActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences pres = PreferenceManager.getDefaultSharedPreferences(this);
+        if(pres.getBoolean("city_selected",false)){
+            Intent i = new Intent(this,WeatherActivity.class);
+            startActivity(i);
+            finish();
+            return;
+        }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_choosearea);
         tv_title = (TextView)findViewById(R.id.title_text);
@@ -79,6 +89,12 @@ public class ChooseAreaActivity extends Activity {
                    selectCity = cityLst.get(position);
                    tv_title.setText(selectCity.getCityName());
                    loadCountryData();
+               }else{
+                   String countryCode = countryLst.get(position).getCountryCode();
+                   Intent i = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+                   i.putExtra("countyCode",countryCode);
+                   startActivity(i);
+                   finish();
                }
            }
        });
